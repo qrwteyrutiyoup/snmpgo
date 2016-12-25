@@ -307,7 +307,7 @@ func (u *usm) Discover(snmp *SNMP) (err error) {
 		snmp.args.SecurityLevel = NoAuthNoPriv
 
 		pdu := NewPdu(snmp.args.Version, GetRequest)
-		_, err = snmp.sendPdu(pdu)
+		_, err = snmp.SendPdu(pdu)
 
 		snmp.args.SecurityLevel = orgSecLevel
 		if err != nil {
@@ -318,7 +318,7 @@ func (u *usm) Discover(snmp *SNMP) (err error) {
 	if u.DiscoveryStatus == noSynchronized && snmp.args.SecurityLevel > NoAuthNoPriv {
 		// Send an empty Pdu
 		pdu := NewPdu(snmp.args.Version, GetRequest)
-		_, err = snmp.sendPdu(pdu)
+		_, err = snmp.SendPdu(pdu)
 		if err != nil {
 			return
 		}

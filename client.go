@@ -159,12 +159,12 @@ func (s *SNMP) Close() {
 
 func (s *SNMP) GetRequest(oids Oids) (result Pdu, err error) {
 	pdu := NewPduWithOids(s.args.Version, GetRequest, oids)
-	return s.sendPdu(pdu)
+	return s.SendPdu(pdu)
 }
 
 func (s *SNMP) GetNextRequest(oids Oids) (result Pdu, err error) {
 	pdu := NewPduWithOids(s.args.Version, GetNextRequest, oids)
-	return s.sendPdu(pdu)
+	return s.SendPdu(pdu)
 }
 
 func (s *SNMP) GetBulkRequest(oids Oids, nonRepeaters, maxRepetitions int) (result Pdu, err error) {
@@ -192,7 +192,7 @@ func (s *SNMP) GetBulkRequest(oids Oids, nonRepeaters, maxRepetitions int) (resu
 	pdu := NewPduWithOids(s.args.Version, GetBulkRequest, oids)
 	pdu.SetNonrepeaters(nonRepeaters)
 	pdu.SetMaxRepetitions(maxRepetitions)
-	return s.sendPdu(pdu)
+	return s.SendPdu(pdu)
 }
 
 // This method inquire about OID subtrees by repeatedly using GetBulkRequest.
@@ -307,11 +307,11 @@ func (s *SNMP) v2trap(pduType PduType, varBinds VarBinds) (err error) {
 	}
 
 	pdu := NewPduWithVarBinds(s.args.Version, pduType, varBinds)
-	_, err = s.sendPdu(pdu)
+	_, err = s.SendPdu(pdu)
 	return
 }
 
-func (s *SNMP) sendPdu(pdu Pdu) (result Pdu, err error) {
+func (s *SNMP) SendPdu(pdu Pdu) (result Pdu, err error) {
 	if err = s.Open(); err != nil {
 		return
 	}
